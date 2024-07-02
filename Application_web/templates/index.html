@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-4">
+                    <!-- Logo -->
+                    <div>
+                        <a href="/" class="flex items-center py-5 px-2 text-gray-700 hover:text-gray-900">
+                            <svg class="h-6 w-6 mr-1 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                            <span class="font-bold">Démocratie participative</span>
+                        </a>
+                    </div>
+                    <!-- Primary Nav -->
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="/repondre" class="py-5 px-3 text-gray-700 hover:text-gray-900">Répondre</a>
+                        <a href="/generate_wordcloud" class="py-5 px-3 text-gray-700 hover:text-gray-900">Nuage de mots</a>
+                        <a href="/resultats" class="py-5 px-3 text-gray-700 hover:text-gray-900">Résultats détaillés</a>
+                    </div>
+                </div>
+                <!-- Mobile button -->
+                <div class="md:hidden flex items-center">
+                    <button class="mobile-menu-button">
+                        <svg class="h-6 w-6 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="mobile-menu hidden md:hidden">
+            <a href="/repondre" class="block py-2 px-4 text-sm hover:bg-gray-200">Répondre</a>
+            <a href="/genrate_wordcloud" class="block py-2 px-4 text-sm hover:bg-gray-200">Nuage de mots</a>
+            <a href="/resultats" class="block py-2 px-4 text-sm hover:bg-gray-200">Résultats détaillés</a>
+        </div>
+    </nav>
+    <div class="flex flex-col items-center justify-center min-h-screen px-4 md:px-8">
+        <h1 class="text-4xl font-bold mb-10">Notre Projet</h1>
+        <div class="wordcloud-container mb-10">
+            <h2 class="text-3xl font-semibold mb-6">Nos motivations</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl">
+                <p class="mb-4">
+                    Dans le cadre de la démocratie participative, qui vise à associer les citoyens au processus de décision politique, il est important de pouvoir entendre tous les citoyens et conserver leurs pensées, demandes et idées.
+                    Cette collecte doit se faire de manière simple pour les concitoyens, donc à travers quelque chose qu'ils ont l'habitude d'utiliser comme un site internet.
+                </p>
+                <p class="mb-4">
+                    Il est donc nécessaire d'avoir un outil qui gère la collecte des demandes des citoyens pour alimenter le pipeline des outils numériques, qui puissent être utilisés pour la démocratie participative.  
+                </p>
+                <p class="mb-4">
+                    L'objectif avec notre projet est d'offrir un espace de recueil des doléances de nos concitoyens couplé à un outil de visualisation des données collectées avec analyse des thèmes prépondérants et des émotions.  
+                </p>
+                <p>
+                    Nous espérons construire un outil de communication entre les citoyens et les élus, qui permettra de mieux comprendre les attentes des citoyens et de mieux répondre à leurs besoins.
+                </p>
+            </div>
+        </div>
+        <div class="wordcloud-container mb-8">
+            <h2 class="text-3xl font-semibold mb-6">Notre démarche</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl">
+                <h3 class="text-2xl font-semibold mb-2">1. Collecte des données</h3>
+                <p class="mb-4"> 
+                    Les données des concitoyens sont collectées à l'aide d'un formulaire qui récupère leur catégorie socio-professionnelle, une doléance et la raison de la demande. Ces données sont ensuite envoyées dans une base de données.  
+                </p>
+                <h3 class="text-2xl font-semibold mb-2">2. Traitement des données</h3>
+                <p class="mb-4">
+                    Les données collectées sont ensuite traitées pour en extraire les thèmes prépondérants et les émotions. Les phrases vont être tokenisées afin de pouvoir les traiter avec un algorithme de type word2vec qui va nous donner pour chaque réponse un score par rapport à chacun des thèmes identifiés au préalable. En parallèle, une analyse de sentiments est réalisée sur la réponse et donne un score allant de -1 (pas content) à 1 (heureux).
+                </p>
+                <h3 class="text-2xl font-semibold mb-2">3. Visualisation des données</h3>
+                <p>
+                    Les données collectées sont dans un premier temps visualisées sous forme de nuages de mots avec un traitement très léger pour enlever les mots de liaison ou sans sens intrinsèque. Ensuite, les données traitées sont visualisées sous forme de graphiques pour montrer les thèmes prépondérants et les émotions selon différentes catégories recoupées.
+                </p>
+            </div>
+        </div>
+        <div class="wordcloud-container mb-8">
+            <h2 class="text-3xl font-semibold mb-6">L'équipe</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl">
+                <p></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const btn = document.querySelector('button.mobile-menu-button');
+        const menu = document.querySelector('.mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
