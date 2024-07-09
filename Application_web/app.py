@@ -12,6 +12,7 @@ import requests
 import logging
 import matplotlib.pyplot as plt
 
+#tests noémie
 # Configurez ces variables avec vos informations Notion
 NOTION_API_URL = "https://api.notion.com/v1/pages"
 NOTION_API_KEY = "secret_3lW3pscXNMTLyVt8ucguorEg8Zrtld5rOo04jLOD43o"
