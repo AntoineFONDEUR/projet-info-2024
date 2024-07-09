@@ -95,12 +95,13 @@ demandes_raisons = [
 # Générer les données
 data = []
 total_population = 1000  # Total de la population pour notre exemple
-
+i=1
 for categorie, proportion in categories:
     count = int((proportion / 100) * total_population)
     for _ in range(count):
         demande, raison = random.choice(demandes_raisons)
-        data.append([categorie, demande, raison, _+1])
+        data.append([categorie, demande, raison, i])
+        i+=1
 
 # Sauvegarder en CSV
 file_path = 'generation_donnees/formulaires.csv'
