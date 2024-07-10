@@ -94,7 +94,7 @@ demandes_raisons = [
 
 # Générer les données
 data = []
-total_population = 30  # Total de la population pour notre exemple
+total_population = 200  # Total de la population pour notre exemple
 i=1
 for categorie, proportion in categories:
     count = int((proportion / 100) * total_population)
@@ -104,7 +104,7 @@ for categorie, proportion in categories:
         i+=1
 
 # Sauvegarder en CSV
-file_path = 'formulaires_2.csv'
+file_path = 'formulaires.csv'
 with open(file_path, 'w', newline='', encoding='utf-8') as file:
     writer = csv.writer(file, delimiter=';')
     writer.writerow(["CategorieSocioPro", "Demande", "Raison", "Index"])
