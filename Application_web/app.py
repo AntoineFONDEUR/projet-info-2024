@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 NOTION_API_URL = "https://api.notion.com/v1/pages"
 NOTION_API_KEY = "secret_3lW3pscXNMTLyVt8ucguorEg8Zrtld5rOo04jLOD43o"
 DATABASE_ID = "d6e83d295d2c40548fdc0fa0241a24c4"
+#DATABASE_ID = "16ea2b5b9b7547a3883b6202160ec2e7"
 NOTION_QUERY_URL = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
 
 # Télécharger les ressources nltk
