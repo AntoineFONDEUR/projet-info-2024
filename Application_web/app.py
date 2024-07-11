@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 # Configurez ces variables avec vos informations Notion
 NOTION_API_URL = "https://api.notion.com/v1/pages"
 NOTION_API_KEY = "secret_3lW3pscXNMTLyVt8ucguorEg8Zrtld5rOo04jLOD43o"
-DATABASE_ID = "d6e83d295d2c40548fdc0fa0241a24c4"
-#DATABASE_ID = "16ea2b5b9b7547a3883b6202160ec2e7"
+#DATABASE_ID = "d6e83d295d2c40548fdc0fa0241a24c4" Rep1
+DATABASE_ID = "16ea2b5b9b7547a3883b6202160ec2e7" #Rep2
 NOTION_QUERY_URL = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
 
 # Télécharger les ressources nltk
@@ -34,7 +34,7 @@ with open('liste_verbes.txt', 'r', encoding='utf-8') as file:
 app = Flask(__name__)
 
 # Configurer le logging
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 def add_to_notion(data):
     headers = {
@@ -55,9 +55,9 @@ def add_to_notion(data):
 
     response = requests.post(NOTION_API_URL, json=payload, headers=headers)
     
-    logging.debug(f"Request payload: {payload}")
-    logging.debug(f"Response status code: {response.status_code}")
-    logging.debug(f"Response content: {response.content}")
+    #logging.debug(f"Request payload: {payload}")
+    #logging.debug(f"Response status code: {response.status_code}")
+    #logging.debug(f"Response content: {response.content}")
     
     return response.status_code
 
@@ -68,20 +68,27 @@ def fetch_data_from_notion():
         "Notion-Version": "2022-06-28"
     }
 
-    response = requests.post(NOTION_QUERY_URL, headers=headers)
-    data = response.json()
-
-    logging.debug(f"Response status code: {response.status_code}")
-    logging.debug(f"Response content: {response.content}")
+    has_more = True
+    start_cursor = None
+    #logging.debug(f"Response status code: {response.status_code}")
+    #logging.debug(f"Response content: {response.content}")
 
     rows = []
-    for result in data['results']:
-        properties = result['properties']
-        en_tant_que = properties['Rep1']['rich_text'][0]['text']['content']
-        jaimerais = properties['Rep2']['rich_text'][0]['text']['content']
-        afin_de_parce_que = properties['Rep3']['rich_text'][0]['text']['content']
-        Index = properties['Index']['rich_text'][0]['text']['content']
-        rows.append([en_tant_que, jaimerais, afin_de_parce_que, Index])
+    while has_more:
+        payload = {"start_cursor": start_cursor} if start_cursor else {}
+        response = requests.post(NOTION_QUERY_URL, headers=headers, json=payload)
+        data = response.json()
+
+        for result in data['results']: 
+            properties = result['properties']
+            en_tant_que = properties['Rep1']['rich_text'][0]['text']['content']
+            jaimerais = properties['Rep2']['rich_text'][0]['text']['content']
+            afin_de_parce_que = properties['Rep3']['rich_text'][0]['text']['content']
+            Index = properties['Index']['rich_text'][0]['text']['content']
+            rows.append([en_tant_que, jaimerais, afin_de_parce_que, Index])
+
+        has_more = data.get("has_more", False)
+        start_cursor = data.get("next_cursor", None)
     
     return rows
 
@@ -95,34 +102,39 @@ def fetch_data_from_notion_analyse():
         "Notion-Version": "2022-06-28"
     }
 
-    response = requests.post(NOTION_QUERY_URL_analyse, headers=headers)
-    data = response.json()
-
-    logging.debug(f"Response status code: {response.status_code}")
-    logging.debug(f"Response content: {response.content}")
-
     rows = []
-    for result in data['results']:
-        properties = result['properties']
-        environnement = properties['environnement']['rich_text'][0]['text']['content']
-        politique = properties['politique']['rich_text'][0]['text']['content']
-        agriculture = properties['agriculture']['rich_text'][0]['text']['content']
-        economie = properties['économie']['rich_text'][0]['text']['content']
-        education = properties['éducation']['rich_text'][0]['text']['content']
-        transport = properties['transport']['rich_text'][0]['text']['content']
-        religion = properties['religion']['rich_text'][0]['text']['content']
-        sante = properties['santé']['rich_text'][0]['text']['content']
-        travail = properties['travail']['rich_text'][0]['text']['content']
-        sport = properties['sport']['rich_text'][0]['text']['content']
-        justice = properties['justice']['rich_text'][0]['text']['content']
-        loisir = properties['loisir']['rich_text'][0]['text']['content']
-        social = properties['social']['rich_text'][0]['text']['content']
-        technologie = properties['technologie']['rich_text'][0]['text']['content']
-        art = properties['art']['rich_text'][0]['text']['content']
-        emotion = properties['emotion']['rich_text'][0]['text']['content']
-        num = properties['num']['rich_text'][0]['text']['content'] #Indexs
+    has_more = True
+    start_cursor = None
 
-        rows.append([num,environnement, politique, agriculture, economie,education,transport,religion,sante,travail,sport,justice,loisir,social,technologie, art, emotion])
+    while has_more:
+        payload = {"start_cursor": start_cursor} if start_cursor else {}
+        response = requests.post(NOTION_QUERY_URL_analyse, headers=headers, json=payload)
+        data = response.json()
+    
+        for result in data['results']:
+            properties = result['properties']
+            environnement = properties['environnement']['rich_text'][0]['text']['content']
+            politique = properties['politique']['rich_text'][0]['text']['content']
+            agriculture = properties['agriculture']['rich_text'][0]['text']['content']
+            economie = properties['économie']['rich_text'][0]['text']['content']
+            education = properties['éducation']['rich_text'][0]['text']['content']
+            transport = properties['transport']['rich_text'][0]['text']['content']
+            religion = properties['religion']['rich_text'][0]['text']['content']
+            sante = properties['santé']['rich_text'][0]['text']['content']
+            travail = properties['travail']['rich_text'][0]['text']['content']
+            sport = properties['sport']['rich_text'][0]['text']['content']
+            justice = properties['justice']['rich_text'][0]['text']['content']
+            loisir = properties['loisir']['rich_text'][0]['text']['content']
+            social = properties['social']['rich_text'][0]['text']['content']
+            technologie = properties['technologie']['rich_text'][0]['text']['content']
+            art = properties['art']['rich_text'][0]['text']['content']
+            emotion = properties['emotion']['rich_text'][0]['text']['content']
+            num = properties['num']['rich_text'][0]['text']['content'] #Indexs
+            rows.append([num,environnement, politique, agriculture, economie,education,transport,religion,sante,travail,sport,
+                     justice,loisir,social,technologie, art, emotion])
+            
+        has_more = data.get("has_more", False)
+        start_cursor = data.get("next_cursor", None)    
     
     return rows
 
@@ -140,11 +152,12 @@ def graphs():
     repbrutes = fetch_data_from_notion()
 
     # Convertir les données en DataFrame
-    datat = pd.DataFrame(reptraitees, columns=['num','environnement', 'politique', 'agriculture', 'economie','education','transport','religion','sante','travail','sport','justice','loisir','social','technologie', 'art','emotion'])
+    datat = pd.DataFrame(reptraitees, columns=['num','environnement', 'politique', 'agriculture', 'economie','education',
+                                               'transport','religion','sante','travail','sport','justice','loisir','social',
+                                               'technologie', 'art','emotion'])
     datatb = pd.DataFrame(repbrutes, columns=['en_tant_que', 'jaimerais', 'afin_de_parce_que', 'Index'])
     
     
-
 
     def find_major_themes(row):
         row = row.drop(labels=['num'])  # Ignorer la colonne 'num'
@@ -154,31 +167,32 @@ def graphs():
 
     datat[['theme_major1', 'theme_major2']] = datat.apply(find_major_themes, axis=1, result_type='expand')
 
-
-    # Fusion en conservant tous les éléments du premier tableau
-    row = pd.merge(datat, datatb, left_on='num', right_on='Index', how='left')
-    row.drop(columns=['Index'], inplace=True)
-
-    row.to_csv('merged_data.csv', index=False)
-   
-
-
     # Crée des graphiques des thèmes les plus fréquents pour le premier et le deuxième thème majoritaire
-    fig, axes = plt.subplots(nrows=4, ncols=1, figsize=(21, 28))
+    fig, axes = plt.subplots(nrows=4, ncols=1, figsize=(21, 40))
 
     # Graphique pour le premier thème majoritaire
     by_theme_major1 = datat.groupby(by='theme_major1').size()
     by_theme_major1.plot(kind='bar', ax=axes[0], color='blue')
-    axes[0].set_title('Nombre de personnes par premier thème majoritaire')
-    axes[0].set_xlabel('Thème')
-    axes[0].set_ylabel('Nombre de personnes')
+    axes[0].set_title('Nombre de personnes par premier thème majoritaire', fontsize=16)
+    axes[0].set_xlabel('Thème majoritaire pour chaque personne', fontsize=16)
+    axes[0].set_ylabel('Nombre de personnes', fontsize=16)
+    axes[0].tick_params(axis='x', labelsize=20)  # Taille de police des labels de l'axe x
+    axes[0].tick_params(axis='y', labelsize=20)  # Taille de police des labels de l'axe y
+
 
     # Graphique pour le deuxième thème majoritaire
     by_theme_major2 = datat.groupby(by='theme_major2').size()
     by_theme_major2.plot(kind='bar', ax=axes[1], color='green')
-    axes[1].set_title('Nombre de personnes par deuxième thème majoritaire')
-    axes[1].set_xlabel('Thème')
-    axes[1].set_ylabel('Nombre de personnes')
+    axes[1].set_title('Nombre de personnes par deuxième thème majoritaire', fontsize=16)
+    axes[1].set_xlabel('Thèmes', fontsize=16)
+    axes[1].set_ylabel('Nombre de personnes', fontsize=16)
+    axes[0].tick_params(axis='x', labelsize=20)  # Taille de police des labels de l'axe x
+    axes[0].tick_params(axis='y', labelsize=20)
+
+    # Fusion en conservant tous les éléments du premier tableau
+    row = pd.merge(datat, datatb, left_on='num', right_on='Index', how='left')
+    row.drop(columns=['Index'], inplace=True)
+    row.to_csv('merged_data.csv', index=False)
 
     # Préparation des données pour le graphique à bulles
     theme_counts = row.groupby(['en_tant_que', 'theme_major1']).size().reset_index(name='count')
@@ -187,25 +201,38 @@ def graphs():
     palette = sns.color_palette('tab10', n_colors=len(datat['theme_major1'].unique()))
 
     # Graphique à bulles pour la distribution des thèmes majoritaires par classe sociale
-    bubble_plot = sns.scatterplot(data=theme_counts, x='en_tant_que', y='theme_major1', size='count', hue='theme_major1', legend='full', palette=palette, sizes=(100, 2000), ax=axes[2])
-    axes[2].set_title('Distribution des Thèmes Majoritaires par Classe Sociale')
-    axes[2].set_xlabel('Classe Sociale')
-    axes[2].set_ylabel('Thème Majoritaire')
+    bubble_plot = sns.scatterplot(data=theme_counts, x='en_tant_que', y='theme_major1', size='count', 
+                                  hue='theme_major1', legend='full', palette=palette, sizes=(100, 2000), ax=axes[2])
+    axes[2].set_title('Distribution des Thèmes Majoritaires par Classe Sociale', fontsize=16)
+    axes[2].set_xlabel('Classe Sociale', fontsize=16)
+    axes[2].set_ylabel('Thème Majoritaire', fontsize=16)
     axes[2].tick_params(axis='x', rotation=45)
+    #axes[2].tick_params(axis='x', labelsize=20)  # Taille de police des labels de l'axe x
+    axes[2].tick_params(axis='y', labelsize=20)
 
     # Ajouter une légende pour la couleur des points à l'intérieur du graphique
     #handles, labels = bubble_plot.get_legend_handles_labels()
     #axes[2].legend(handles=handles, labels=labels, title='Thème Majoritaire', loc='center left', bbox_to_anchor=(1, 0.5), scatterpoints=1)
 
     handles, labels = bubble_plot.get_legend_handles_labels()
-    axes[2].legend(handles=handles, labels=labels, title='Nombre de personnes', loc='center left', bbox_to_anchor=(1, 0.5), scatterpoints=1, fontsize='large')
+    axes[2].legend(handles=handles, labels=labels, title='Nombre de personnes', loc='center left', 
+                   bbox_to_anchor=(1, 0.5), scatterpoints=1, fontsize='large')
+
+    from matplotlib.ticker import MaxNLocator
+    import matplotlib.ticker as ticker
 
     emotions = row['emotion']
     sorted_emotions = np.sort(emotions)
-    axes[3].hist(sorted_emotions, bins=10, edgecolor='black')  # Tracer l'histogramme avec 50 bins
-    axes[3].set_title('Histogramme des émotions')
-    axes[3].set_xlabel('Valeur des émotions')
-    axes[3].set_ylabel('Fréquence')
+    axes[3].hist(sorted_emotions, bins=20, edgecolor='black')  # Tracer l'histogramme avec 50 bins
+    axes[3].set_title('Histogramme des émotions', fontsize=16)
+    axes[3].set_xlabel('Valeur des émotions', fontsize=16)
+    axes[3].set_ylabel('Fréquence', fontsize=16)
+    axes[3].xaxis.set_major_locator(MaxNLocator(nbins=20))
+    #axes[3].set_xlim(-1, 1)  # Définir les limites de l'axe x
+    axes[3].tick_params(axis='x', labelsize=20)  # Taille de police des labels de l'axe x
+    axes[3].tick_params(axis='y', labelsize=20)
+    axes[3].tick_params(axis='x', rotation=45)
+
     axes[3].grid(True)
 
     plt.tight_layout()
