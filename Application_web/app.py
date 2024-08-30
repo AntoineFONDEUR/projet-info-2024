@@ -1,19 +1,20 @@
-from flask import Flask, render_template, request, redirect, url_for
-import csv
-from wordcloud import WordCloud
+# on importe toutes les bibliothèques nécessaires
+from flask import Flask, render_template, request, redirect, url_for # flask est un framework web léger pour Python
+import csv # pour lire et écrire des fichiers CSV
+from wordcloud import WordCloud # pour générer des nuages de mots
 import pandas as pd
 import numpy as np
-import io
+import io # pour lire et écrire des fichiers
 import base64
-from nltk.corpus import stopwords
+from nltk.corpus import stopwords #nltk est une bibliothèque de traitement du langage naturel
 from nltk.tokenize import word_tokenize
 import nltk
-import requests
-import logging
+import requests # pour envoyer des requêtes HTTP
+import logging 
 import matplotlib.pyplot as plt
 
 #tests noémie
-# Configurez ces variables avec vos informations Notion
+# Configuration des variables avec les informations Notion
 NOTION_API_URL = "https://api.notion.com/v1/pages"
 NOTION_API_KEY = "secret_3lW3pscXNMTLyVt8ucguorEg8Zrtld5rOo04jLOD43o"
 #DATABASE_ID = "d6e83d295d2c40548fdc0fa0241a24c4" Rep1
@@ -246,7 +247,7 @@ def graphs():
     # Rendre le template HTML avec les graphiques
     return render_template('resultats.html', graph_url=graph_url)
 
-@app.route('/repondre')
+@app.route('/repondre') # La page pour répondre au questionnaire
 def index():
     return render_template('form.html', options_en_tant_que=[
         "Exploitants agricoles",
@@ -275,7 +276,7 @@ def index():
         "Chômeurs",
         "Etudiants",
         "Autres personnes sans activité professionnelle"
-])
+]) # Les options pour la liste déroulante
 
 @app.route('/save', methods=['POST'])
 def save():

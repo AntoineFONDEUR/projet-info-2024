@@ -1,3 +1,4 @@
+# Ce script génère un fichier CSV de formulaires fictifs, on se base sur les proportions réelles des catégories professionnelles et sur des couples de demandes et raisons fictifs générés par Chat GPT.
 import csv
 import random
 
