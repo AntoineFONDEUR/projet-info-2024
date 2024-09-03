@@ -5,6 +5,7 @@ Vous trouverez sur ce repos GIT, le Projet 31 réalisé par Antoine FONDEUR, Cam
 1. Dans Application_web : tout le code relatif au site internet, ce dernier peut-être lancé en local avec le programme app.py
 2. Dans generation_donnees : un programme pour générer des données de test
 3. Dans traitement_donnnes : le programme qui s'occupe de récupérer, traiter puis poster les donnees sur Notion.
+4. Dans présentation_projet : les slides de la présentation orale et un document descriptif de notre projet
 
 
 ## Notre démarche
