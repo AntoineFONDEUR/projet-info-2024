@@ -17,6 +17,6 @@ Les données des concitoyens sont collectées à l'aide d'un formulaire qui réc
 
 Les données collectées sont ensuite traitées pour en extraire les thèmes prépondérants et les émotions. Les phrases vont être tokenisées afin de pouvoir les traiter avec un algorithme de type word2vec qui va nous donner pour chaque réponse un score par rapport à chacun des thèmes identifiés au préalable. En parallèle, une analyse de sentiments est réalisée sur la réponse et donne un score allant de -1 (pas content) à 1 (heureux).
 
-### 3. Visualisation des données (Dossiers 1 et 4)
+### 3. Visualisation des données (Dossiers 1)
 
 Les données collectées sont dans un premier temps visualisées sous forme de nuages de mots avec un traitement très léger pour enlever les mots de liaison ou sans sens intrinsèque. Ensuite, les données traitées sont visualisées sous forme de graphiques pour montrer les thèmes prépondérants et les émotions selon différentes catégories recoupées.
